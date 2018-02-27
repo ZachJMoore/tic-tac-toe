@@ -1,0 +1,112 @@
+img,
+embed,
+object,
+video {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat", "Open Sans", sans-serif;
+}
+
+p,
+a,
+span,
+small {
+    font-family: "Open Sans", sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-column-left {
+    align-items: flex-start;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/*Unless needed, all new code goes below this. Dont change your defaults*/
+
+body {
+    padding: 15px;
+    background: url(/background/geometry.png);
+}
+
+.game-container{
+    padding: 25px;
+    border-radius: 5px;
+    background-color: #22586c;
+    width: 600px;
+    height: 600px;
+    max-width: 100%;
+}
+
+
+.game-rows{
+    margin: 10px 0;
+    width: 100%;
+    height: 33.33%;
+}
+
+.game-boxes{
+    color: #f0f0f0;
+    margin: 0 5px;
+    width: 33.33%;
+    height: 100%;
+    border: 5px solid #f0f0f0;
+    border-radius: 5px;
+}
+
+.x:before{
+    content: "\00d7";
+    transform-origin: center;
+    transform: scale(20) translateY(-1px);
+}
+
+.o:before{
+    content: "\25C9";
+    transform-origin: center;
+    transform: scale(11);
+}
+.win{
+    background-color: #45b945;
+}
