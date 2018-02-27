@@ -98,14 +98,13 @@ body {
 
 .x:before{
     content: "\00d7";
-    transform-origin: center;
-    transform: scale(20) translateY(-1px);
+    font-size: 160px;
+    transform: translateY(-15px);
 }
 
 .o:before{
     content: "\25C9";
-    transform-origin: center;
-    transform: scale(11);
+    font-size: 100px;
 }
 .win{
     background-color: #45b945;

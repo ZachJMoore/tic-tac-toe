@@ -1,12 +1,21 @@
 let data = {
     //store the values to be edited some place other than the default value for easy reset.
     init: function(){
-        this.squares = this.default
+        this.squares = data.default
+    },
+    //loop through and set the defaults back to normal
+    reset: function(){
+        for(let i = 0; i < this.default.length; i++){
+            for(let e = 0; e < this.default[i].length; e++){
+                this.default[i][e].checked[0] = false;
+                this.default[i][e].checked[1] = undefined;
+            }
+        }
     },
     //sets the current player. false are O's and true is X's
     currentPlayer: false,
+    //first value is whether the box is check or not, second value is who has checked the box which is set in the handler.placeMove function. This array below repressents 3 throws, and the three boxes inside each.
     default: [
-        //first value is whether the box is check or not, second value is who has checked the box which is set in the handler.placeMove function. This array below repressents 3 throws, and the three boxes inside each.
         [{checked: [false, undefined]},
          {checked: [false, undefined]},
          {checked: [false, undefined]}
@@ -30,6 +39,10 @@ let handler = {
         data.init();
         view.init();
     },
+    reset: function(){
+        data.reset();
+        view.init();
+    },
     placeMove: function(){
         //check to make sure it hasnt been selected
         if (data.currentSelection.checked[0] === false){
@@ -47,13 +60,62 @@ let handler = {
             data.currentSelection.checked[1] = player.boolean;
             //add the class X or O to the selected element
             data.currentSelection.section.classList.add(player.class);
-
+            //toggle the boolean of the current player so that it switches turns each time
+            data.currentPlayer = !data.currentPlayer;
+            this.CheckForWin();
         } else{
             //if the box has already been clicked log out which element your clicking
             console.log(data.currentSelection.section.id)
         }
-        //toggle the boolean of the current player so that it switches turns each time
-        data.currentPlayer = !data.currentPlayer;
+    },
+    CheckForStreak: function(){
+        //check for (false = O's)
+        let checkFor = false
+        //loop over and check for false streaks, then at the end, if nothing matches, switch and test for true
+        for(let e = 0; e <= 1; e++){
+            for(let i = 0; i < 3; i++){
+                console.log(i)
+                //tests for row streaks, then column streaks
+                if(data.squares[i][0].checked[1] === checkFor &&
+                   data.squares[i][1].checked[1] === checkFor &&
+                   data.squares[i][2].checked[1] === checkFor ){
+                    //return a true and which player we are checking for.
+                    return [true, checkFor];
+                } else if(data.squares[0][i].checked[1] === checkFor &&
+                          data.squares[1][i].checked[1] === checkFor &&
+                          data.squares[2][i].checked[1] === checkFor){
+                    return [true, checkFor];
+                    //this else below checks for diagonal
+                } else if((data.squares[0][0].checked[1] === checkFor || data.squares[0][2].checked[1] === checkFor) &&
+                          (data.squares[1][1].checked[1] === checkFor) &&
+                          (data.squares[2][0].checked[1] === checkFor || data.squares[2][2].checked[1] === checkFor)){
+                    return [true, checkFor];
+                }
+            }
+            checkFor = !checkFor
+        }
+    },
+    CheckForWin: function(){
+        //make sure we dont try comparing to undefined
+        if (this.CheckForStreak() === undefined){
+            return
+        }else if (this.CheckForStreak()[0]){
+            //if checkForStreak returns as false then alert and reset game. Anything for a win can be done here. Maybe add some actual graphics?
+            if (!this.CheckForStreak()[1]){
+                setTimeout(function(){
+                    alert("O's Won! Congrats!")
+                    handler.reset();
+                }, 150)
+                console.log("Congrat, O's won")
+            }
+            if (this.CheckForStreak()[1]){
+                setTimeout(function(){
+                    alert("X's Won! Good Job!")
+                    handler.reset();
+                }, 150)
+                console.log("Congrat, x's won")
+            }
+        }
     }
 }
 
