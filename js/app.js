@@ -1,7 +1,7 @@
 let data = {
     //store the values to be edited some place other than the default value for easy reset.
     init: function(){
-        this.squares = data.default
+        this.squares = this.default
     },
     //loop through and set the defaults back to normal
     reset: function(){
@@ -80,40 +80,62 @@ let handler = {
                    data.squares[i][1].checked[1] === checkFor &&
                    data.squares[i][2].checked[1] === checkFor ){
                     //return a true and which player we are checking for.
-                    return [true, checkFor];
+                    return [true, checkFor, "row"];
                 } else if(data.squares[0][i].checked[1] === checkFor &&
                           data.squares[1][i].checked[1] === checkFor &&
                           data.squares[2][i].checked[1] === checkFor){
-                    return [true, checkFor];
+                    return [true, checkFor, "column"];
                     //this else below checks for diagonal
-                } else if((data.squares[0][0].checked[1] === checkFor || data.squares[0][2].checked[1] === checkFor) &&
+                } else if((data.squares[0][0].checked[1] === checkFor) &&
                           (data.squares[1][1].checked[1] === checkFor) &&
-                          (data.squares[2][0].checked[1] === checkFor || data.squares[2][2].checked[1] === checkFor)){
-                    return [true, checkFor];
+                          (data.squares[2][2].checked[1] === checkFor) ||
+                          (data.squares[0][2].checked[1] === checkFor) &&
+                          (data.squares[1][1].checked[1] === checkFor) &&
+                          (data.squares[2][0].checked[1] === checkFor)){
+                    return [true, checkFor, "diagonal"];
                 }
             }
             checkFor = !checkFor
         }
     },
+
+    totalChecked: function(){
+        let total = 0
+        //run through the data.squares array and count how many squares have been checked
+        for(let i = 0; i < data.squares.length; i++){
+            data.squares[i].forEach(function(item){
+            if (item.checked[0] === true){
+                total++
+            }
+        })}
+        return total
+    },
     CheckForWin: function(){
         //make sure we dont try comparing to undefined
-        if (this.CheckForStreak() === undefined){
+        if (this.CheckForStreak() === undefined && this.totalChecked() === 9){
+            setTimeout(function(){
+                    alert(`The cat won! better luck next time!`)
+                    handler.reset();
+                }, 150)
+                console.log(this.totalChecked())
+        }else if (this.CheckForStreak() === undefined){
             return
         }else if (this.CheckForStreak()[0]){
+            let self = this
             //if checkForStreak returns as false then alert and reset game. Anything for a win can be done here. Maybe add some actual graphics?
             if (!this.CheckForStreak()[1]){
                 setTimeout(function(){
-                    alert("O's Won! Congrats!")
+                    alert(`O's won with a ${self.CheckForStreak()[2]}! Congrats!`)
                     handler.reset();
                 }, 150)
-                console.log("Congrat, O's won")
+                console.log(this.CheckForStreak())
             }
             if (this.CheckForStreak()[1]){
                 setTimeout(function(){
-                    alert("X's Won! Good Job!")
+                    alert(`X's won with a ${self.CheckForStreak()[2]}! Congrats!`)
                     handler.reset();
                 }, 150)
-                console.log("Congrat, x's won")
+                console.log(this.CheckForStreak())
             }
         }
     }
@@ -156,3 +178,6 @@ let view = {
 
 //Make everything start
 handler.init()
+
+//data.squares[0][2].checked[1] === checkFor
+//data.squares[2][0].checked[1] === checkFor
